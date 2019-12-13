@@ -1,6 +1,13 @@
 export default {
   mnpQuestions: ['wiki', 'license', 'homepage', 'keywords'],
   questions: {
+    original: {
+      text: 'Original Repo',
+      async afterQuestions() {
+
+      },
+      alias: 'https://idio.cc/original',
+    },
     binary: {
       confirm: true,
       text: 'With binary',
@@ -94,7 +101,7 @@ export default {
   },
   async preUpdate({ repo: { owner: { avatar_url } } }, { updateFiles }) {
     await updateFiles({
-      re: 'https://avatars3.githubusercontent.com/u/38815725?v=4',
+      re: /https:\/\/avatars3\.githubusercontent\.com\/u\/38815725?v=4/,
       replacement: avatar_url,
     }, { file: '.documentary/index.jsx' })
   },
