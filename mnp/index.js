@@ -2,9 +2,14 @@ export default {
   mnpQuestions: ['wiki', 'license', 'homepage', 'keywords'],
   questions: {
     original: {
-      text: 'Original Repo',
-      async afterQuestions() {
-
+      text: 'Original Repo like org/name',
+      async afterQuestions({ download, writeFileSync }, repo) {
+        try {
+          const res = await download(`https://raw.githubusercontent.com/${repo}/master/LICENSE`)
+          writeFileSync('COPYING', res)
+        } catch (err) {
+          //
+        }
       },
       alias: 'https://idio.cc/original',
     },
@@ -105,7 +110,7 @@ export default {
       replacement: avatar_url,
     }, { file: '.documentary/index.jsx' })
   },
-  async afterInit({ name }, { renameFile, initManager, git }) {
+  async afterInit({ name }, { renameFile, initManager }) {
     renameFile('compile/bin/mnp.js', `compile/bin/${name}.js`)
     renameFile('compile/mnp.js', `compile/${name}.js`)
     renameFile('compile/mnp.js.map', `compile/${name}.js.map`)
